@@ -1,2 +1,17 @@
-# Backup
-Discord backup bot to backup and install servers
+Discord Backup Bot
+=============
+
+Backup discord servers and reinstall them from the database.
+
+# Features
+ - Easy-to-use web panel with discord authetication
+ - Discord bot commands for backup and installation
+ - Restricted access for admins only
+ 
+ 
+# How to run
+
+1. Install [NodeJS and NPM](https://nodejs.org/en/download/).
+2. Install the required dependencies: `npm install`.
+3. Configure the environment variables in `.env`.
+4. Run the bot: `npm start`.
