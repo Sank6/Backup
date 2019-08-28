@@ -6,10 +6,14 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "btoa": "*",
     "discord.js": "github:discordjs/discord.js",
+    "dotenv": "*",
+    "express": "*",
     "klasa": "github:dirigeants/klasa",
     "mongodb": "*",
-    "dotenv": "*"
+    "ejs": "*",
+    "node-fetch": "*"
   },
   "engines": {
     "node": "10.x"
