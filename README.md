@@ -12,6 +12,7 @@ Backup discord servers and reinstall them from the database.
 # How to run
 
 1. Install [NodeJS and NPM](https://nodejs.org/en/download/).
+2. Install [Git](https://www.atlassian.com/git/tutorials/install-git)
 2. Install the required dependencies: `npm install`.
-3. Configure the environment variables in `.env`. ([MongoDB](https://mlab.com/) | [Discord Token](https://discordapp.com/developers/applications))
+3. Configure the environment variables in `.env`. ([MongoDB](https://mongodb.com/atlas) | [Discord Token](https://discordapp.com/developers/applications))
 4. Run the bot: `npm start`.
