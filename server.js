@@ -29,7 +29,7 @@ app.get("/discord", (req, res) => {
 
 app.get("/api/login", (req, res) => {
   res.redirect(
-    `https://discordapp.com/api/oauth2/authorize?client_id=${CLIENT_ID}&response_type=code&scope=identify+guilds+guilds.join`
+    `https://discordapp.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_url=${req.headers.host}/api/callback&response_type=code&scope=identify+guilds+guilds.join`
   );
 });
 
