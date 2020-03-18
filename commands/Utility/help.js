@@ -58,7 +58,7 @@ module.exports = class extends Command {
     async buildDisplay(message) {
         const commands = await this._fetchCommands(message);
 
-        const { prefix } = message.guildSettings;
+        const { PREFIX } = message.guildSettings;
         const display = new RichDisplay();
         display.addPage(new MessageEmbed()
             .setTitle(`Help`)
@@ -69,18 +69,18 @@ module.exports = class extends Command {
             display.addPage(new MessageEmbed()
                 .setTitle(`${category} Commands`)
                 .setColor(0xff0050)
-                .setDescription(list.map(this.formatCommand.bind(this, message, prefix, true)).join('\n'))
+                .setDescription(list.map(this.formatCommand.bind(this, message, PREFIX, true)).join('\n'))
             );
         }
         return display;
     }
     async buildHelp(message) {
         const commands = await this._fetchCommands(message);
-        const { prefix } = message.guildSettings;
+        const { PREFIX } = message.guildSettings;
 
         const helpMessage = [];
         for (const [category, list] of commands) {
-            helpMessage.push(`**${category} Commands**:\n`, list.map(this.formatCommand.bind(this, message, prefix, false)).join('\n'), '');
+            helpMessage.push(`**${category} Commands**:\n`, list.map(this.formatCommand.bind(this, message, PREFIX, false)).join('\n'), '');
         }
         return helpMessage.join('\n');
     }
@@ -97,8 +97,8 @@ module.exports = class extends Command {
         return commands;
     }
 
-    formatCommand(message, prefix, richDisplay, command) {
+    formatCommand(message, PREFIX, richDisplay, command) {
         const description = isFunction(command.description) ? command.description(message.language) : command.description;
-        return richDisplay ? `■ \`${prefix}${command.name}\` : ${description}` : `■ **\`${prefix}${command.name}\`** : ${description}`;
+        return richDisplay ? `■ \`${PREFIX}${command.name}\` : ${description}` : `■ **\`${PREFIX}${command.name}\`** : ${description}`;
     }
 };

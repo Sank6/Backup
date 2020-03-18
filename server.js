@@ -3,18 +3,10 @@ require("dotenv").config();
 const express = require("express");
 const btoa = require("btoa");
 const fetch = require("node-fetch");
-const Discord = require("discord.js")
-const {
-  Client
-} = require("klasa");
+const Discord = require("discord.js");
+const { Client } = require("klasa");
 
-const {
-  CLIENT_ID,
-  CLIENT_SECRET,
-  prefix,
-  domain,
-  invite
-} = process.env;
+const { CLIENT_ID, CLIENT_SECRET, PREFIX, DOMAIN, INVITE } = process.env;
 
 // Express config
 const app = express();
@@ -24,7 +16,7 @@ app.listen("80");
 
 // Express endpoints
 app.get("/discord", (req, res) => {
-  res.redirect(invite);
+  res.redirect(INVITE);
 });
 
 app.get("/api/login", (req, res) => {
@@ -34,7 +26,8 @@ app.get("/api/login", (req, res) => {
 });
 
 app.get("/api/callback", async (req, res) => {
-  if (!req.query.code) throw new Error("NoCodeProvided");
+  let { code } = req.query;
+  if (!code) throw new Error("NoCodeProvided");
   let opts = {
     method: "POST",
     headers: {
@@ -42,7 +35,7 @@ app.get("/api/callback", async (req, res) => {
     }
   };
   let response = await fetch(
-    `https://discordapp.com/api/oauth2/token?grant_type=authorization_code&code=${req.query.code}`,
+    `https://discordapp.com/api/oauth2/token?grant_type=authorization_code&code=${code}`,
     opts
   );
   let json = await response.json();
@@ -55,7 +48,8 @@ app.get("/api/code", async (req, res) => {
   if (!req.query.tokens) res.redirect("/");
   let c = JSON.parse(req.query.tokens).refresh_token;
   let response = await fetch(
-    `https://discordapp.com/api/oauth2/token?grant_type=refresh_token&refresh_token=${c}`, {
+    `https://discordapp.com/api/oauth2/token?grant_type=refresh_token&refresh_token=${c}`,
+    {
       method: "POST",
       headers: {
         Authorization: `Basic ${btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)}`
@@ -92,10 +86,10 @@ app.get("/api/info", (req, res) => {
       error: "Invalid Token"
     });
   fetch("https://discordapp.com/api/users/@me/guilds", {
-      headers: {
-        Authorization: `Bearer ${JSON.parse(req.query.tokens).access_token}`
-      }
-    })
+    headers: {
+      Authorization: `Bearer ${JSON.parse(req.query.tokens).access_token}`
+    }
+  })
     .then(res => res.json())
     .then(user => {
       if (!user || user.error)
@@ -223,18 +217,20 @@ app.get("/api/guildinfo/:id", async (req, res) => {
   let found = JSON.parse(client.settings.backups).find(
     guild => guild.id == req.params.id
   );
-  if (found === undefined) found = {
-    error: "No backups found."
-  };
+  if (found === undefined)
+    found = {
+      error: "No backups found."
+    };
 
   setTimeout(async () => {
     let guilds = await fetch(
       `${domain}/api/info?tokens=${encodeURIComponent(req.query.tokens)}`
     );
     guilds = await guilds.json();
-    if (!Array.isArray(guilds)) return res.json({
-      error: "You are being ratelimited. Reload the page after a few seconds."
-    });
+    if (!Array.isArray(guilds))
+      return res.json({
+        error: "You are being ratelimited. Reload the page after a few seconds."
+      });
     let find = guilds.find(x => x.id === req.params.id);
     if (!find)
       return res.json({
@@ -247,7 +243,7 @@ app.get("/api/guildinfo/:id", async (req, res) => {
       });
 
     return res.json(found);
-  }, 2000)
+  }, 2000);
 });
 
 app.get("/info/:id", (req, res) => {
@@ -263,7 +259,7 @@ app.get("/new", (req, res) => {
 // Discord bot config
 const client = new Client({
   commandEditing: true,
-  prefix: prefix,
+  PREFIX,
   disabledCorePieces: ["commands"],
   providers: {
     default: "mongodb"
@@ -281,7 +277,7 @@ client.on("klasaReady", () => {
   client.schedule.create("backup", "0 0 * * 0");
   client.user.setPresence({
     activity: {
-      name: `for ${prefix}help`,
+      name: `for ${PREFIX}help`,
       type: "WATCHING"
     }
   });

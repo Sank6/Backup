@@ -1,4 +1,4 @@
-const { Command, RichDisplay } = require('klasa');
+const { Command } = require('klasa');
 const { MessageEmbed } = require('discord.js');
 
 module.exports = class extends Command {
@@ -19,12 +19,12 @@ module.exports = class extends Command {
       
       
       if (
-          (message.guild.me.roles.find(x => x.managed).rawPosition &&
-          ((message.guild.roles.size - 1) - message.guild.me.roles.find(x => x.managed).rawPosition !== 0))
+          (message.guild.me.roles.cache.find(x => x.managed).rawPosition &&
+          ((message.guild.roles.size - 1) - message.guild.me.roles.cache.find(x => x.managed).rawPosition !== 0))
          ) 
         return message.channel.send(`❌ I do not have enough permissions to install a backup. Please make sure the role called \`${message.guild.me.roles.find(x => x.managed).name}\` is above all the others in \`Server Settings > Roles\` and try this command again.`)
       else if (
-          !message.guild.me.roles.find(x => x.managed).rawPosition &&
+          !message.guild.me.roles.cache.find(x => x.managed).rawPosition &&
           message.guild.me.roles.size > 0 &&
           ((message.guild.roles.size - 1) - message.guild.me.roles.highest !== 0)
           )
