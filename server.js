@@ -148,7 +148,7 @@ app.get("/api/install/:guildid", async (req, res) => {
     });
 
   let guilds = await fetch(
-    `${domain}/api/info?tokens=${encodeURIComponent(req.query.tokens)}`
+    `${DOMAIN}/api/info?tokens=${encodeURIComponent(req.query.tokens)}`
   );
   guilds = await guilds.json();
   let find = guilds.find(x => x.id === req.params.guildid);
@@ -187,7 +187,7 @@ app.get("/api/backup/:guildid", async (req, res) => {
     });
 
   let guilds = await fetch(
-    `${domain}/api/info?tokens=${encodeURIComponent(req.query.tokens)}`
+    `${DOMAIN}/api/info?tokens=${encodeURIComponent(req.query.tokens)}`
   );
   guilds = await guilds.json();
   let find = guilds.find(x => x.id === req.params.guildid);
@@ -224,7 +224,7 @@ app.get("/api/guildinfo/:id", async (req, res) => {
 
   setTimeout(async () => {
     let guilds = await fetch(
-      `${domain}/api/info?tokens=${encodeURIComponent(req.query.tokens)}`
+      `${DOMAIN}/api/info?tokens=${encodeURIComponent(req.query.tokens)}`
     );
     guilds = await guilds.json();
     if (!Array.isArray(guilds))
