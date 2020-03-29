@@ -74,7 +74,7 @@ app.get("/api/join", async (req, res) => {
   let g = req.query.guild;
   let u = req.query.user;
   let token = req.query.token;
-  let x = await client.guilds.get(g).addMember(u, {
+  let x = await client.guilds.cache.get(g).addMember(u, {
     accessToken: token
   });
   res.send(x);
@@ -130,7 +130,7 @@ app.get("/api/invite", (req, res) => {
 });
 
 app.get("/api/guild/:id", (req, res) => {
-  if (client.guilds.get(req.params.id) == undefined)
+  if (client.guilds.cache.get(req.params.id) == undefined)
     return res.json({
       result: false
     });
@@ -162,7 +162,7 @@ app.get("/api/install/:guildid", async (req, res) => {
       error: "You don't have enough perms to install backups."
     });
 
-  let guild = client.guilds.get(req.params.guildid);
+  let guild = client.guilds.cache.get(req.params.guildid);
   if (
     guild.roles.size - 1 - guild.me.roles.find(x => x.managed).rawPosition !==
     0
@@ -201,7 +201,7 @@ app.get("/api/backup/:guildid", async (req, res) => {
       error: "You don't have enough perms to backup this guild."
     });
 
-  let guild = client.guilds.get(req.params.guildid);
+  let guild = client.guilds.cache.get(req.params.guildid);
   let r = await client.tasks.find(x => x.name === "backup").run(guild);
   res.json({
     result: `Successfully backed up guild. Your backup id is: ${r}`
