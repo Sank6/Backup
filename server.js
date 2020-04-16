@@ -259,7 +259,7 @@ app.get("/new", (req, res) => {
 // Discord bot config
 const client = new Client({
   commandEditing: true,
-  PREFIX,
+  prefix: PREFIX,
   disabledCorePieces: ["commands"],
   providers: {
     default: "mongodb"
