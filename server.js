@@ -28,14 +28,19 @@ app.get("/api/login", (req, res) => {
 app.get("/api/callback", async (req, res) => {
   let { code } = req.query;
   if (!code) throw new Error("NoCodeProvided");
+  let params = new URLSearchParams();
+  params.set('grant_type', 'authorization_code');
+  params.set('code', code);
   let opts = {
     method: "POST",
     headers: {
-      Authorization: `Basic ${btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)}`
-    }
+      Authorization: `Basic ${btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)}`,
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: params.toString()
   };
   let response = await fetch(
-    `https://discordapp.com/api/oauth2/token?grant_type=authorization_code&code=${code}`,
+    `https://discordapp.com/api/oauth2/token`,
     opts
   );
   let json = await response.json();
@@ -47,13 +52,18 @@ app.get("/api/callback", async (req, res) => {
 app.get("/api/code", async (req, res) => {
   if (!req.query.tokens) res.redirect("/");
   let c = JSON.parse(req.query.tokens).refresh_token;
+  const params = new URLSearchParams();
+  params.set('grant_type', 'refresh_token');
+  params.set('refresh_token', c);
   let response = await fetch(
-    `https://discordapp.com/api/oauth2/token?grant_type=refresh_token&refresh_token=${c}`,
+    `https://discordapp.com/api/oauth2/token`,
     {
       method: "POST",
       headers: {
-        Authorization: `Basic ${btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)}`
-      }
+        Authorization: `Basic ${btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)}`,
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: params.toString()
     }
   );
   let json = await response.json();
