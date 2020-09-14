@@ -1,15 +1,18 @@
-Discord Backup Bot
-=============
+# Archived
+This project will no longer be maintained
+
+
+## Discord Backup Bot
 
 Backup discord servers and reinstall them from the database.
 
-# Features
+### Features
  - Easy-to-use web panel with discord authetication
  - Discord bot commands for backup and installation
  - Restricted access for admins only
  
  
-# How to run
+### How to run
 
 1. Install [NodeJS and NPM](https://nodejs.org/en/download/).
 2. Install [Git](https://www.atlassian.com/git/tutorials/install-git)
